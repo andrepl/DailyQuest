@@ -1,18 +1,23 @@
 package com.norcode.bukkit.dailyquests.quest;
 
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
-import com.norcode.bukkit.dailyquests.type.QuestType;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class MiningQuest extends Quest {
+import java.util.Map;
+
+public class MiningQuest extends Quest implements ConfigurationSerializable {
 	private Material ore;
-	public MiningQuest(QuestType type, long received, int progressMax, QuestReward reward) {
-		super(type, received, progressMax, reward);
+
+
+	public MiningQuest(long receivedAt, Material ore, int qty, QuestReward reward) {
+		super(receivedAt, qty, reward);
+		this.ore = ore;
 	}
 
-	public MiningQuest(QuestType type, long receivedAt, Material ore, int qty, QuestReward reward) {
-		super(type, receivedAt, qty, reward);
-		this.ore = ore;
+	public MiningQuest(Map<String, Object> map) {
+		super(map);
+		this.ore = Material.valueOf(map.get("ore").toString());
 	}
 
 	@Override
@@ -23,5 +28,16 @@ public class MiningQuest extends Quest {
 	@Override
 	public String[] getDescription() {
 		return new String[0];  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> basicData = super.serialize();
+		basicData.put("ore", this.ore.name());
+		return basicData;
+	}
+
+	public Material getOre() {
+		return ore;
 	}
 }

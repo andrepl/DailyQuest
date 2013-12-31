@@ -1,0 +1,9 @@
+main: ${project.main}
+name: ${project.name}
+version: ${project.version}
+authors: ${project.authors}
+softdepend: ${project.softdependencies}
+depend: ${project.dependencies}
+commands:
+  quest:
+    description: show quest info

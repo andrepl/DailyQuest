@@ -3,15 +3,22 @@ package com.norcode.bukkit.dailyquests.type;
 
 import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.quest.MiningQuest;
+import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.reward.ItemReward;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
 public class Mining extends QuestType {
 
+	private DailyQuests plugin;
+
 	private static HashMap<Material, Integer> ores = new HashMap<Material, Integer>();
+
 	static {
 		ores.put(Material.DIAMOND_ORE, 2);
 		ores.put(Material.EMERALD_ORE, 1);
@@ -23,7 +30,9 @@ public class Mining extends QuestType {
 	}
 
 	public Mining(DailyQuests plugin) {
-		super(plugin);
+		this.plugin = plugin;
+		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
 	}
 
 	@Override
@@ -77,6 +86,31 @@ public class Mining extends QuestType {
 			baseMult += baseMult;
 		}
 		int qty = ores.get(ore) * baseMult;
-		return new MiningQuest(this, System.currentTimeMillis(), ore, qty, new ItemReward(new ItemStack(Material.DIAMOND_PICKAXE)));
+		return new MiningQuest(System.currentTimeMillis(), ore, qty, new ItemReward(new ItemStack(Material.DIAMOND_PICKAXE)));
 	}
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		plugin.getLogger().info("Player Placing Block." + event.getBlockPlaced().getType());
+		if (ores.keySet().contains(event.getBlockPlaced().getType())) {
+			plugin.getLogger().info("Setting block data to 1");
+			event.getBlockPlaced().setData((byte)1);
+		}
+	}
+
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		if (ores.keySet().contains(event.getBlock().getType())) {
+			if (event.getBlock().getData() == 0) {
+				Quest quest = plugin.getPlayerQuest(event.getPlayer());
+				if (quest instanceof MiningQuest) {
+					if (!quest.isFinished() && event.getBlock().getType() == ((MiningQuest) quest).getOre()) {
+						quest.progress(event.getPlayer(), 1);
+					}
+				}
+			}
+		}
+	}
+
+
 }

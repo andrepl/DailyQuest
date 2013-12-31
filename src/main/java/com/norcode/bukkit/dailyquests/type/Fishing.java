@@ -2,8 +2,12 @@ package com.norcode.bukkit.dailyquests.type;
 
 import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.quest.FishingQuest;
+import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.reward.ItemReward;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Fishing extends QuestType {
@@ -32,10 +36,17 @@ public class Fishing extends QuestType {
 		public byte getData() {
 			return data;
 		}
+
+		public boolean satisfiedBy(ItemStack caught) {
+			return caught.getType().equals(Material.RAW_FISH) &&
+					(caught.getData().getData() == this.data || this.data == 32767);
+		}
 	}
 
 	public Fishing(DailyQuests plugin) {
-		super(plugin);
+		super();
+		this.plugin = plugin;
+		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
 	@Override
@@ -68,7 +79,20 @@ public class Fishing extends QuestType {
 		if (c == Catch.FISH || c == Catch.COD) {
 			qty *= 2;
 		}
-		return new FishingQuest(this, System.currentTimeMillis(), c, qty, new ItemReward(new ItemStack(Material.FISHING_ROD)));
+		return new FishingQuest(System.currentTimeMillis(), c, qty, new ItemReward(new ItemStack(Material.FISHING_ROD)));
+	}
+
+	@EventHandler
+	public void onFishCaught(PlayerFishEvent event) {
+		if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+			Quest quest = plugin.getPlayerQuest(event.getPlayer());
+			if (quest instanceof FishingQuest) {
+				ItemStack caught = ((Item) event.getCaught()).getItemStack();
+				if (!quest.isFinished() && ((FishingQuest) quest).getRequiredCatch().satisfiedBy(caught)) {
+					quest.progress(event.getPlayer(), caught.getAmount());
+				}
+			}
+		}
 	}
 }
 
