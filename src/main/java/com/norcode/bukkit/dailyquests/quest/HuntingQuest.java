@@ -8,30 +8,37 @@ import java.util.Map;
 
 public class HuntingQuest extends Quest implements ConfigurationSerializable {
 
-        private EntityType entityType;
+    private EntityType entityType;
 
-    	public HuntingQuest(long receivedAt, EntityType entityType, int qty, QuestReward reward) {
-       		super(receivedAt, qty, reward);
-            this.entityType = entityType;
-        }
+    public HuntingQuest(long receivedAt, EntityType entityType, int qty, QuestReward reward) {
+        super(receivedAt, qty, reward);
+        this.entityType = entityType;
+    }
 
-    	public HuntingQuest(Map<String, Object> map) {
-            super(map);
-            this.entityType = EntityType.valueOf(map.get("ore").toString());
-        }
+    public HuntingQuest(Map<String, Object> map) {
+        super(map);
+        this.entityType = EntityType.valueOf((String) map.get("enemy"));
+    }
 
-        @Override
-        public String getTitle() {
-            return "Hunt " + progressMax + " " + this.entityType.name() + ".";
-        }
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> basicData = super.serialize();
+        basicData.put("enemy", this.entityType.name());
+        return basicData;
+    }
 
-        @Override
-        public String[] getDescription() {
-            return new String[0];
-        }
+    @Override
+    public String getTitle() {
+        return "Hunt " + progressMax + " " + this.entityType.name() + ".";
+    }
 
-        public EntityType getEntityType() {
-            return entityType;
-        }
+    @Override
+    public String[] getDescription() {
+        return new String[0];
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
 
 }
