@@ -1,6 +1,7 @@
 package com.norcode.bukkit.dailyquests;
 
 import com.norcode.bukkit.dailyquests.command.QuestCommand;
+import com.norcode.bukkit.dailyquests.event.QuestCompleteEvent;
 import com.norcode.bukkit.dailyquests.quest.CompoundQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
@@ -18,6 +19,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +39,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
 		registerQuestType("Compound", new Compound(this));
@@ -109,6 +113,12 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
+	/**
+	 * get the players current quest, or generate it if they have none.
+	 * this does not include completed quests.
+	 * @param player
+	 * @return the players current Quest, or a new one if they had none.
+	 */
 	public Quest getPlayerQuest(Player player) {
 		if (!player.hasMetadata(MetaKeys.ACTIVE_QUEST)) {
 			ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
@@ -145,5 +155,10 @@ public class DailyQuests extends JavaPlugin implements Listener {
 			results.add(quest);
 		}
 		return results;
+	}
+
+	@EventHandler(ignoreCancelled=true, priority= EventPriority.MONITOR)
+	public void onQuestComplete(QuestCompleteEvent event) {
+		setQuestsCompleted(event.getPlayer(), getQuestsCompleted(event.getPlayer()) + 1);
 	}
 }

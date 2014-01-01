@@ -16,6 +16,7 @@ public class Compound extends QuestType {
 		ConfigurationSerialization.registerClass(CompoundQuest.class);
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
+
 	@Override
 	public Quest generateQuest(double difficulty) {
 		int num = 1 + (int)(difficulty * (1+random.nextDouble()) * 3);
