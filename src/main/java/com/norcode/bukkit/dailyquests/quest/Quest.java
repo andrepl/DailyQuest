@@ -1,6 +1,8 @@
 package com.norcode.bukkit.dailyquests.quest;
 
+import com.norcode.bukkit.dailyquests.event.QuestCompleteEvent;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -48,8 +50,12 @@ public abstract class Quest {
 	public void progress(Player player, int amt) {
 		progress += amt;
 		if (isFinished()) {
-			player.sendMessage("Quest Completed!");
-			getReward().give(player);
+			QuestCompleteEvent event = new QuestCompleteEvent(player, this);
+			Bukkit.getServer().getPluginManager().callEvent(event);
+			if (!event.isCancelled()) {
+				player.sendMessage("Quest Completed!");
+				getReward().give(player);
+			}
 		} else {
 			player.sendMessage(getTitle() + " [" + progress + "/" + progressMax + "]");
 		}
@@ -76,4 +82,5 @@ public abstract class Quest {
 	public QuestReward getReward() {
 		return reward;
 	}
+
 }

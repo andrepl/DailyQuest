@@ -98,11 +98,11 @@ public class Fishing extends QuestType {
 	@EventHandler
 	public void onFishCaught(PlayerFishEvent event) {
 		if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-			Quest quest = plugin.getPlayerQuest(event.getPlayer());
-			if (quest instanceof FishingQuest) {
+			for (Quest quest: plugin.getPlayerQuests(event.getPlayer(), FishingQuest.class)) {
 				ItemStack caught = ((Item) event.getCaught()).getItemStack();
 				if (!quest.isFinished() && ((FishingQuest) quest).getRequiredCatch().satisfiedBy(caught)) {
 					quest.progress(event.getPlayer(), caught.getAmount());
+					break;
 				}
 			}
 		}
