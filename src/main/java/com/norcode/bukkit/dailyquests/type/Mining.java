@@ -101,10 +101,10 @@ public class Mining extends QuestType {
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (ores.keySet().contains(event.getBlock().getType())) {
 			if (event.getBlock().getData() == 0) {
-				Quest quest = plugin.getPlayerQuest(event.getPlayer());
-				if (quest instanceof MiningQuest) {
+				for (Quest quest: plugin.getPlayerQuests(event.getPlayer(), MiningQuest.class)) {
 					if (!quest.isFinished() && event.getBlock().getType() == ((MiningQuest) quest).getOre()) {
 						quest.progress(event.getPlayer(), 1);
+						break;
 					}
 				}
 			}

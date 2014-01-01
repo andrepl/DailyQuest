@@ -1,9 +1,11 @@
 package com.norcode.bukkit.dailyquests;
 
 import com.norcode.bukkit.dailyquests.command.QuestCommand;
+import com.norcode.bukkit.dailyquests.quest.CompoundQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import com.norcode.bukkit.dailyquests.reward.RewardManager;
+import com.norcode.bukkit.dailyquests.type.Compound;
 import com.norcode.bukkit.dailyquests.type.Fishing;
 import com.norcode.bukkit.dailyquests.type.Mining;
 import com.norcode.bukkit.dailyquests.type.QuestType;
@@ -36,6 +38,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	public void onEnable() {
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
+		registerQuestType("Compound", new Compound(this));
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
 	}
@@ -50,11 +53,20 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		return true;
 	}
 
-	public Quest generateQuest(Player player) {
+	public Quest generateQuest(double difficulty) {
 		List<String> keys = new ArrayList<String>(questTypes.keySet());
 		String key = keys.get(rand.nextInt(keys.size()));
+		keys.remove("Compound");
+		if (difficulty > 0.2 && rand.nextDouble() < difficulty) {
+			keys.add("Compound");
+		}
 		QuestType t = questTypes.get(key);
-		Quest quest = t.generateQuest(getQuestsCompleted(player) / 200.0);
+		Quest quest = t.generateQuest(difficulty);
+		return quest;
+	}
+
+	public Quest generateQuest(Player player) {
+		Quest quest = generateQuest(getQuestsCompleted(player) / 100.0);
 		player.setMetadata(MetaKeys.ACTIVE_QUEST,
 				new FixedMetadataValue(this, quest));
 		ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
@@ -111,5 +123,27 @@ public class DailyQuests extends JavaPlugin implements Listener {
 
 	public QuestReward generateReward(double difficulty) {
 		return rewardManager.generateReward(difficulty);
+	}
+
+	/**
+	 * returns all quests of the given type that a player currently has assigned.  this is usually 0 or 1 quests..
+	 * but in the case of a compound quest may be more.
+	 * @param player
+	 * @param questType
+	 * @return
+	 */
+	public List<Quest> getPlayerQuests(Player player, Class<? extends Quest> questType) {
+		Quest quest = getPlayerQuest(player);
+		List<Quest> results = new ArrayList<Quest>();
+		if (quest instanceof CompoundQuest) {
+			for (Quest q: ((CompoundQuest) quest).getQuests()) {
+				if (q.getClass().equals(questType)) {
+					results.add(q);
+				}
+			}
+		} else if (quest.getClass().equals(questType)) {
+			results.add(quest);
+		}
+		return results;
 	}
 }

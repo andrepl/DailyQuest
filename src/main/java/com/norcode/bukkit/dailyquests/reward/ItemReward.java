@@ -30,30 +30,17 @@ public class ItemReward implements QuestReward {
 
 		Material mat = Material.DIAMOND;
 
-		if (difficulty <= 0.2) {
+		if (difficulty <= 0.2 && random.nextDouble() < 0.85) {
+
 			// leather gear, sometimes iron.
-			if (random.nextDouble() < 0.75) {
-				// leather gear
-				switch (random.nextInt(4)) {
-					case 0: mat = Material.LEATHER_BOOTS; break;
-					case 1: mat = Material.LEATHER_LEGGINGS; break;
-					case 2: mat = Material.LEATHER_CHESTPLATE; break;
-					case 3: mat = Material.LEATHER_HELMET; break;
-				}
-			} else {
-				// got lucky, iron
-				switch (random.nextInt(8)) {
-					case 0: mat = Material.IRON_SWORD; break;
-					case 1: mat = Material.IRON_AXE; break;
-					case 2: mat = Material.IRON_PICKAXE; break;
-					case 3: mat = Material.BOW; break;
-					case 4: mat = Material.IRON_BOOTS; break;
-					case 5: mat = Material.IRON_LEGGINGS; break;
-					case 6: mat = Material.IRON_CHESTPLATE; break;
-					case 7: mat = Material.IRON_HELMET; break;
-				}
+			switch (random.nextInt(4)) {
+				case 0: mat = Material.LEATHER_BOOTS; break;
+				case 1: mat = Material.LEATHER_LEGGINGS; break;
+				case 2: mat = Material.LEATHER_CHESTPLATE; break;
+				case 3: mat = Material.LEATHER_HELMET; break;
 			}
-		} else if (difficulty <= 0.5 && random.nextDouble() < 0.85) { // possible upgrade chance to diamond level
+
+		} else if (difficulty <= 0.5 && random.nextDouble() < 0.85) {
 			// chain or iron
 			switch (random.nextInt(12)) {
 				case 0: mat = Material.IRON_SWORD; break;
@@ -88,8 +75,17 @@ public class ItemReward implements QuestReward {
 		}
 		ItemStack stack = new ItemStack(mat);
 		net.minecraft.server.v1_7_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);
-		nms = EnchantmentManager.a(random, nms, (int)(difficulty * 30));
+		nms = EnchantmentManager.a(random, nms, (int)Math.min(30, difficulty * 30));
 		stack = CraftItemStack.asCraftMirror(nms);
+		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
+		if (difficulty > 0.8) {
+			int extra = 1+random.nextInt((int) ((difficulty-0.8) * 10));
+			for (int i=0;i<extra;i++) {
+				ItemReward rwd = ItemReward.generate(random, 0.8);
+				stacks.addAll(rwd.stacks);
+			}
+			return new ItemReward(stacks.toArray(new ItemStack[0]));
+		}
 		return new ItemReward(stack);
 	}
 
