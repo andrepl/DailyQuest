@@ -1,6 +1,7 @@
 package com.norcode.bukkit.dailyquests.type;
 
 import com.norcode.bukkit.dailyquests.DailyQuests;
+import com.norcode.bukkit.dailyquests.command.CommandError;
 import com.norcode.bukkit.dailyquests.quest.FishingQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
 import org.bukkit.Bukkit;
@@ -11,14 +12,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.LinkedList;
+
 public class Fishing extends QuestType {
 
 	public static enum Catch {
-		FISH("Fish", new ItemStack(Material.RAW_FISH, (byte) 32767)),
-		COD("Cod", new ItemStack(Material.RAW_FISH, (byte) 0)),
-		SALMON("Salmon", new ItemStack(Material.RAW_FISH, (byte) 1)),
-		CLOWNFISH("Clownfish", new ItemStack(Material.RAW_FISH, (byte) 2)),
-		PUFFERFISH("Pufferfish", new ItemStack(Material.RAW_FISH, (byte) 3));
+		FISH("Fish", new ItemStack(Material.RAW_FISH, 1, (byte) 32767)),
+		COD("Cod", new ItemStack(Material.RAW_FISH, 1, (byte) 0)),
+		SALMON("Salmon", new ItemStack(Material.RAW_FISH, 1, (byte) 1)),
+		CLOWNFISH("Clownfish", new ItemStack(Material.RAW_FISH, 1, (byte) 2)),
+		PUFFERFISH("Pufferfish", new ItemStack(Material.RAW_FISH, 1, (byte) 3));
 
 
 
@@ -60,6 +63,11 @@ public class Fishing extends QuestType {
 		this.plugin = plugin;
 		ConfigurationSerialization.registerClass(FishingQuest.class);
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+
+	@Override
+	public Quest fromUserInput(LinkedList<String> args) throws CommandError {
+		return null;
 	}
 
 	@Override
