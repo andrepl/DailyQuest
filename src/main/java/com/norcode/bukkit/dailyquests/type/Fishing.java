@@ -3,8 +3,9 @@ package com.norcode.bukkit.dailyquests.type;
 import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.quest.FishingQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
-import com.norcode.bukkit.dailyquests.reward.ItemReward;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -13,20 +14,20 @@ import org.bukkit.inventory.ItemStack;
 public class Fishing extends QuestType {
 
 	public static enum Catch {
-		FISH("Fish", (byte) 32767),
-		COD("Cod", (byte) 0),
-		SALMON("Salmon", (byte) 1),
-		CLOWNFISH("Clownfish", (byte) 2),
-		PUFFERFISH("Pufferfish", (byte) 3);
+		FISH("Fish", new ItemStack(Material.RAW_FISH, (byte) 32767)),
+		COD("Cod", new ItemStack(Material.RAW_FISH, (byte) 0)),
+		SALMON("Salmon", new ItemStack(Material.RAW_FISH, (byte) 1)),
+		CLOWNFISH("Clownfish", new ItemStack(Material.RAW_FISH, (byte) 2)),
+		PUFFERFISH("Pufferfish", new ItemStack(Material.RAW_FISH, (byte) 3));
 
 
 
 		private final String name;
-		private final byte data;
+		private final ItemStack stack;
 
-		private Catch(String name, byte data) {
+		private Catch(String name, ItemStack stack) {
 			this.name = name;
-			this.data = data;
+			this.stack = stack;
 		}
 
 		public String getName() {
@@ -34,18 +35,30 @@ public class Fishing extends QuestType {
 		};
 
 		public byte getData() {
-			return data;
+			return stack.getData().getData();
+		}
+
+		public Material getMaterial() {
+			return stack.getType();
 		}
 
 		public boolean satisfiedBy(ItemStack caught) {
-			return caught.getType().equals(Material.RAW_FISH) &&
-					(caught.getData().getData() == this.data || this.data == 32767);
+			Bukkit.getLogger().info("Checking if " + caught + " satisfies " + this);
+			if (caught.getType() == stack.getType() && (
+					caught.getData().getData() == this.getData() || this.getData() == -1)) {
+				Bukkit.getLogger().info("matches, it's good.");
+				return true;
+			} else {
+				Bukkit.getLogger().info("doesn't match: " + caught + " != " + stack);
+				return false;
+			}
 		}
 	}
 
 	public Fishing(DailyQuests plugin) {
 		super();
 		this.plugin = plugin;
+		ConfigurationSerialization.registerClass(FishingQuest.class);
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
@@ -79,7 +92,7 @@ public class Fishing extends QuestType {
 		if (c == Catch.FISH || c == Catch.COD) {
 			qty *= 2;
 		}
-		return new FishingQuest(System.currentTimeMillis(), c, qty, new ItemReward(new ItemStack(Material.FISHING_ROD)));
+		return new FishingQuest(System.currentTimeMillis(), c, qty, plugin.generateReward(difficulty));
 	}
 
 	@EventHandler

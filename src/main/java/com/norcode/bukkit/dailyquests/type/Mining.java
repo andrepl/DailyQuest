@@ -4,12 +4,11 @@ package com.norcode.bukkit.dailyquests.type;
 import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.quest.MiningQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
-import com.norcode.bukkit.dailyquests.reward.ItemReward;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
@@ -31,8 +30,8 @@ public class Mining extends QuestType {
 
 	public Mining(DailyQuests plugin) {
 		this.plugin = plugin;
+		ConfigurationSerialization.registerClass(MiningQuest.class);
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
-
 	}
 
 	@Override
@@ -86,7 +85,7 @@ public class Mining extends QuestType {
 			baseMult += baseMult;
 		}
 		int qty = ores.get(ore) * baseMult;
-		return new MiningQuest(System.currentTimeMillis(), ore, qty, new ItemReward(new ItemStack(Material.DIAMOND_PICKAXE)));
+		return new MiningQuest(System.currentTimeMillis(), ore, qty, plugin.generateReward(difficulty));
 	}
 
 	@EventHandler

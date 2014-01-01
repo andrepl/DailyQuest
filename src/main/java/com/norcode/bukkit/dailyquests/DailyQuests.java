@@ -2,6 +2,8 @@ package com.norcode.bukkit.dailyquests;
 
 import com.norcode.bukkit.dailyquests.command.QuestCommand;
 import com.norcode.bukkit.dailyquests.quest.Quest;
+import com.norcode.bukkit.dailyquests.reward.QuestReward;
+import com.norcode.bukkit.dailyquests.reward.RewardManager;
 import com.norcode.bukkit.dailyquests.type.Fishing;
 import com.norcode.bukkit.dailyquests.type.Mining;
 import com.norcode.bukkit.dailyquests.type.QuestType;
@@ -28,11 +30,14 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	private Random rand = new Random();
 	private HashMap<String, QuestType> questTypes = new HashMap<String, QuestType>();
 	private QuestCommand questCommand;
+	private RewardManager rewardManager;
+
 	@Override
 	public void onEnable() {
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
 		questCommand = new QuestCommand(this);
+		rewardManager = new RewardManager(this);
 	}
 
 	public boolean registerQuestType(String name, QuestType questType) {
@@ -102,5 +107,9 @@ public class DailyQuests extends JavaPlugin implements Listener {
 			player.setMetadata(MetaKeys.ACTIVE_QUEST, new FixedMetadataValue(this, quest));
 		}
 		return (Quest) player.getMetadata(MetaKeys.ACTIVE_QUEST).get(0).value();
+	}
+
+	public QuestReward generateReward(double difficulty) {
+		return rewardManager.generateReward(difficulty);
 	}
 }
