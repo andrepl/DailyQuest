@@ -161,4 +161,20 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	public void onQuestComplete(QuestCompleteEvent event) {
 		setQuestsCompleted(event.getPlayer(), getQuestsCompleted(event.getPlayer()) + 1);
 	}
+
+	public QuestType getQuestType(String typeLower) {
+		for (String k: questTypes.keySet()) {
+			if (k.equalsIgnoreCase(typeLower)) {
+				return questTypes.get(k);
+			}
+		}
+		return null;
+	}
+
+	public void setPlayerQuest(Player player, Quest quest) {
+		ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
+		cfg.set(MetaKeys.ACTIVE_QUEST, quest);
+		PlayerID.savePlayerData(getName(), player, cfg);
+		player.setMetadata(MetaKeys.ACTIVE_QUEST, new FixedMetadataValue(this, quest));
+	}
 }

@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Mining extends QuestType {
 
@@ -32,6 +33,11 @@ public class Mining extends QuestType {
 		this.plugin = plugin;
 		ConfigurationSerialization.registerClass(MiningQuest.class);
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+
+	@Override
+	public Quest fromUserInput(LinkedList<String> args) {
+		return null;
 	}
 
 	@Override
