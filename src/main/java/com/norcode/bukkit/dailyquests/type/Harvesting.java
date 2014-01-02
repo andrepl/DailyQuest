@@ -36,7 +36,7 @@ public class Harvesting extends QuestType {
 
 	@Override
 	public Quest fromUserInput(LinkedList<String> args) throws CommandError {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		return null;
 	}
 
 	@Override
@@ -94,6 +94,8 @@ public class Harvesting extends QuestType {
 			return ((NetherWarts) md).getState() == NetherWartsState.RIPE;
 		} else if (md instanceof CocoaPlant) {
 			return ((CocoaPlant) md).getSize() == CocoaPlant.CocoaPlantSize.LARGE;
+		} else if (b.getType() == Material.CARROT || b.getType() == Material.POTATO) {
+			return md.getData() == 7;
 		}
 		return false;
 	}

@@ -4,6 +4,7 @@ import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.chat.Text;
 import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.type.QuestType;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,7 +31,7 @@ public class QuestCommand extends BaseCommand {
 		Player p = (Player) commandSender;
 
 		Quest quest = plugin.getPlayerQuest(p);
-		plugin.send(p, new Text(plugin.getChatPrefix()).append(quest.getTitle()));
+		plugin.send(p, new Text(plugin.getChatPrefix()).append(new Text(ChatColor.GOLD + quest.getTitle() + ChatColor.RESET)));
 		plugin.send(p, new Text("Progress: " + quest.getProgressString()));
 		plugin.send(p, new Text("Reward: ").append(quest.getReward().getTitle()));
 	}

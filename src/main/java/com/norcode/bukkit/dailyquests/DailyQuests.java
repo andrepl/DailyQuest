@@ -172,13 +172,15 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onQuestProgress(QuestProgressEvent event) {
 		getLogger().info(event.toString());
-		send(event.getPlayer(), new Text(getChatPrefix()).append(event.getQuest().getTitle()).append(" [" +
+		send(event.getPlayer(), new Text(getChatPrefix()).append(ChatColor.GOLD + event.getQuest().getTitle() + ChatColor.RESET).append(" [" +
 				(event.getQuest().getProgress() + event.getAmount()) + "/" + event.getQuest().getProgressMax() + "]"));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onQuestComplete(QuestCompleteEvent event) {
 		setQuestsCompleted(event.getPlayer(), getQuestsCompleted(event.getPlayer()) + 1);
+		event.getQuest().getReward().give(event.getPlayer());
+		send(event.getPlayer(), new Text(getChatPrefix()).append(ChatColor.GOLD + event.getQuest().getTitle() + ChatColor.RESET + " Complete!"));
 	}
 
 	@EventHandler()
