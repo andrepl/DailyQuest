@@ -35,39 +35,87 @@ public class ItemReward implements QuestReward {
 
 			// leather gear, sometimes iron.
 			switch (random.nextInt(4)) {
-				case 0: mat = Material.LEATHER_BOOTS; break;
-				case 1: mat = Material.LEATHER_LEGGINGS; break;
-				case 2: mat = Material.LEATHER_CHESTPLATE; break;
-				case 3: mat = Material.LEATHER_HELMET; break;
+				case 0:
+					mat = Material.LEATHER_BOOTS;
+					break;
+				case 1:
+					mat = Material.LEATHER_LEGGINGS;
+					break;
+				case 2:
+					mat = Material.LEATHER_CHESTPLATE;
+					break;
+				case 3:
+					mat = Material.LEATHER_HELMET;
+					break;
 			}
 
 		} else if (difficulty <= 0.5 && random.nextDouble() < 0.85) {
 			// chain or iron
 			switch (random.nextInt(12)) {
-				case 0: mat = Material.IRON_SWORD; break;
-				case 1: mat = Material.IRON_AXE; break;
-				case 2: mat = Material.IRON_PICKAXE; break;
-				case 3: mat = Material.BOW; break;
-				case 4: mat = Material.IRON_BOOTS; break;
-				case 5: mat = Material.IRON_LEGGINGS; break;
-				case 6: mat = Material.IRON_CHESTPLATE; break;
-				case 7: mat = Material.IRON_HELMET; break;
-				case 8: mat = Material.CHAINMAIL_BOOTS; break;
-				case 9: mat = Material.CHAINMAIL_LEGGINGS; break;
-				case 10: mat = Material.CHAINMAIL_CHESTPLATE; break;
-				case 11: mat = Material.CHAINMAIL_HELMET; break;
+				case 0:
+					mat = Material.IRON_SWORD;
+					break;
+				case 1:
+					mat = Material.IRON_AXE;
+					break;
+				case 2:
+					mat = Material.IRON_PICKAXE;
+					break;
+				case 3:
+					mat = Material.BOW;
+					break;
+				case 4:
+					mat = Material.IRON_BOOTS;
+					break;
+				case 5:
+					mat = Material.IRON_LEGGINGS;
+					break;
+				case 6:
+					mat = Material.IRON_CHESTPLATE;
+					break;
+				case 7:
+					mat = Material.IRON_HELMET;
+					break;
+				case 8:
+					mat = Material.CHAINMAIL_BOOTS;
+					break;
+				case 9:
+					mat = Material.CHAINMAIL_LEGGINGS;
+					break;
+				case 10:
+					mat = Material.CHAINMAIL_CHESTPLATE;
+					break;
+				case 11:
+					mat = Material.CHAINMAIL_HELMET;
+					break;
 			}
 		} else {
 			// diamond
 			switch (random.nextInt(8)) {
-				case 0: mat = Material.DIAMOND_AXE; break;
-				case 1: mat = Material.DIAMOND_SWORD; break;
-				case 2: mat = Material.DIAMOND_PICKAXE; break;
-				case 3: mat = Material.DIAMOND_BOOTS; break;
-				case 4: mat = Material.DIAMOND_HELMET; break;
-				case 5: mat = Material.DIAMOND_LEGGINGS; break;
-				case 6: mat = Material.DIAMOND_CHESTPLATE; break;
-				case 7: mat = Material.DIAMOND_SWORD; break; // an extra sword, because diamond swords rule.
+				case 0:
+					mat = Material.DIAMOND_AXE;
+					break;
+				case 1:
+					mat = Material.DIAMOND_SWORD;
+					break;
+				case 2:
+					mat = Material.DIAMOND_PICKAXE;
+					break;
+				case 3:
+					mat = Material.DIAMOND_BOOTS;
+					break;
+				case 4:
+					mat = Material.DIAMOND_HELMET;
+					break;
+				case 5:
+					mat = Material.DIAMOND_LEGGINGS;
+					break;
+				case 6:
+					mat = Material.DIAMOND_CHESTPLATE;
+					break;
+				case 7:
+					mat = Material.DIAMOND_SWORD;
+					break; // an extra sword, because diamond swords rule.
 			}
 		}
 		if (random.nextDouble() < 0.15) {
@@ -77,12 +125,12 @@ public class ItemReward implements QuestReward {
 		}
 		ItemStack stack = new ItemStack(mat);
 		net.minecraft.server.v1_7_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);
-		nms = EnchantmentManager.a(random, nms, (int)Math.min(30, difficulty * 30));
+		nms = EnchantmentManager.a(random, nms, (int) Math.min(30, difficulty * 30));
 		stack = CraftItemStack.asCraftMirror(nms);
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 		if (difficulty > 0.8) {
-			int extra = 1+random.nextInt((int) ((difficulty-0.8) * 10));
-			for (int i=0;i<extra;i++) {
+			int extra = 1 + random.nextInt((int) ((difficulty - 0.8) * 10));
+			for (int i = 0; i < extra; i++) {
 				ItemReward rwd = ItemReward.generate(random, 0.8);
 				stacks.addAll(rwd.stacks);
 			}
@@ -96,7 +144,7 @@ public class ItemReward implements QuestReward {
 		List<String> keys = new ArrayList<String>(map.keySet());
 		this.stacks = new ArrayList<ItemStack>();
 		Collections.sort(keys);
-		for (String key: keys) {
+		for (String key : keys) {
 			if (key.startsWith("item")) {
 				Object value = map.get(key);
 				Bukkit.getLogger().info("Got " + key + "->" + value + "(" + value.getClass() + ")");
@@ -108,12 +156,12 @@ public class ItemReward implements QuestReward {
 	@Override
 	public void give(Player p) {
 		ItemStack[] rewardStacks = new ItemStack[stacks.size()];
-		for (int i=0;i<stacks.size();i++) {
+		for (int i = 0; i < stacks.size(); i++) {
 			rewardStacks[i] = stacks.get(i).clone();
 		}
 		HashMap<Integer, ItemStack> noFit = p.getInventory().addItem(rewardStacks);
 		// whatever doesn't fit in their inv,  drop it at their feet.
-		for (ItemStack s: noFit.values()) {
+		for (ItemStack s : noFit.values()) {
 			p.getWorld().dropItem(p.getLocation(), s);
 		}
 	}
@@ -139,9 +187,9 @@ public class ItemReward implements QuestReward {
 	@Override
 	public Map<String, Object> serialize() {
 		HashMap map = new HashMap<String, Object>();
-		int ctr=0;
-		for (ItemStack s: stacks) {
-			map.put("item"+(ctr++), s);
+		int ctr = 0;
+		for (ItemStack s : stacks) {
+			map.put("item" + (ctr++), s);
 		}
 		return map;
 	}

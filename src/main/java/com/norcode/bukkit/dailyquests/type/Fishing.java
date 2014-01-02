@@ -24,7 +24,6 @@ public class Fishing extends QuestType {
 		PUFFERFISH("Pufferfish", new ItemStack(Material.RAW_FISH, 1, (byte) 3));
 
 
-
 		private final String name;
 		private final ItemStack stack;
 
@@ -35,7 +34,9 @@ public class Fishing extends QuestType {
 
 		public String getName() {
 			return name;
-		};
+		}
+
+		;
 
 		public byte getData() {
 			return stack.getData().getData();
@@ -106,7 +107,7 @@ public class Fishing extends QuestType {
 	@EventHandler
 	public void onFishCaught(PlayerFishEvent event) {
 		if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-			for (Quest quest: plugin.getPlayerQuests(event.getPlayer(), FishingQuest.class)) {
+			for (Quest quest : plugin.getPlayerQuests(event.getPlayer(), FishingQuest.class)) {
 				ItemStack caught = ((Item) event.getCaught()).getItemStack();
 				if (!quest.isFinished() && ((FishingQuest) quest).getRequiredCatch().satisfiedBy(caught)) {
 					quest.progress(event.getPlayer(), caught.getAmount());

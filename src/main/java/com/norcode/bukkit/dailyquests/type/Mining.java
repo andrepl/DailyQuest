@@ -59,7 +59,7 @@ public class Mining extends QuestType {
 			if (random.nextDouble() * 1.5 < difficulty) {
 				ore = Material.GOLD_ORE;
 			} else if (random.nextDouble() < difficulty) {
-			    ore = Material.LAPIS_ORE;
+				ore = Material.LAPIS_ORE;
 				if (random.nextBoolean()) {
 					ore = Material.REDSTONE_ORE;
 				}
@@ -78,7 +78,7 @@ public class Mining extends QuestType {
 			if (random.nextBoolean()) {
 				ore = Material.LAPIS_ORE;
 			} else {
-				if  (random.nextBoolean()) {
+				if (random.nextBoolean()) {
 					ore = Material.EMERALD_ORE;
 				}
 				if (random.nextBoolean()) {
@@ -99,7 +99,7 @@ public class Mining extends QuestType {
 		plugin.getLogger().info("Player Placing Block." + event.getBlockPlaced().getType());
 		if (ores.keySet().contains(event.getBlockPlaced().getType())) {
 			plugin.getLogger().info("Setting block data to 1");
-			event.getBlockPlaced().setData((byte)1);
+			event.getBlockPlaced().setData((byte) 1);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class Mining extends QuestType {
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (ores.keySet().contains(event.getBlock().getType())) {
 			if (event.getBlock().getData() == 0) {
-				for (Quest quest: plugin.getPlayerQuests(event.getPlayer(), MiningQuest.class)) {
+				for (Quest quest : plugin.getPlayerQuests(event.getPlayer(), MiningQuest.class)) {
 					if (!quest.isFinished() && event.getBlock().getType() == ((MiningQuest) quest).getOre()) {
 						quest.progress(event.getPlayer(), 1);
 						break;

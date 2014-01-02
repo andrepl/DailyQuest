@@ -45,12 +45,12 @@ public class BaseCommand implements TabExecutor {
 	}
 
 	Map.Entry<String, BaseCommand> getSubcommand(CommandSender sender, String arg) {
-		for (Map.Entry<String, BaseCommand> sc: subcommands.entrySet()) {
+		for (Map.Entry<String, BaseCommand> sc : subcommands.entrySet()) {
 			if (sc.getValue().name.equalsIgnoreCase(arg))
 				return sc;
 		}
-		for (Map.Entry<String, BaseCommand> sc: subcommands.entrySet()) {
-			for (String a: sc.getValue().aliases) {
+		for (Map.Entry<String, BaseCommand> sc : subcommands.entrySet()) {
+			for (String a : sc.getValue().aliases) {
 				if (a.equalsIgnoreCase(arg))
 					return sc;
 			}
@@ -66,7 +66,8 @@ public class BaseCommand implements TabExecutor {
 				BaseCommand subCmd = null;
 				try {
 					subCmd = getSubcommand(commandSender, args.peek().toLowerCase()).getValue();
-				} catch (NullPointerException ex) {}
+				} catch (NullPointerException ex) {
+				}
 				if (subCmd != null) {
 					subCmd.onCommand(commandSender, args.pop(), args);
 					return;
@@ -87,7 +88,7 @@ public class BaseCommand implements TabExecutor {
 
 	protected Map<String, BaseCommand> filterByPermission(CommandSender sender, Map<String, BaseCommand> subcommands) {
 		Map<String, BaseCommand> filtered = new HashMap<String, BaseCommand>();
-		for (Map.Entry<String, BaseCommand> entry: subcommands.entrySet()) {
+		for (Map.Entry<String, BaseCommand> entry : subcommands.entrySet()) {
 			if (entry.getValue().requiredPermission == null || sender.hasPermission(entry.getValue().requiredPermission)) {
 				filtered.put(entry.getKey(), entry.getValue());
 			}
@@ -122,11 +123,11 @@ public class BaseCommand implements TabExecutor {
 				return sub.onTabComplete(sender, partial, args);
 			} else {
 				List<String> results = new ArrayList<String>();
-				for (BaseCommand sc: filterByPermission(sender, subcommands).values()) {
+				for (BaseCommand sc : filterByPermission(sender, subcommands).values()) {
 					if (sc.name.toLowerCase().startsWith(partial)) {
 						results.add(sc.name);
 					} else {
-						for (String a: sc.aliases) {
+						for (String a : sc.aliases) {
 							if (a.toLowerCase().startsWith(partial)) {
 								results.add(a);
 								break;

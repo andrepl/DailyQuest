@@ -13,6 +13,7 @@ public enum ClickAction {
 	ClickAction(EnumClickAction action) {
 		this.clickAction = action;
 	}
+
 	public EnumClickAction getNMS() {
 		return this.clickAction;
 	}

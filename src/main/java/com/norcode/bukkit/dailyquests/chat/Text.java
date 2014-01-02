@@ -21,8 +21,8 @@ public class Text extends ChatComponentText {
 		return (Text) a(node);
 	}
 
-	public Text append(IChatBaseComponent ... nodes) {
-		for (IChatBaseComponent node: nodes) {
+	public Text append(IChatBaseComponent... nodes) {
+		for (IChatBaseComponent node : nodes) {
 			a(node);
 		}
 		return this;

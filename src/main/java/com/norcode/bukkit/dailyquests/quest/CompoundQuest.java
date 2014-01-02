@@ -19,7 +19,7 @@ public class CompoundQuest extends Quest implements ConfigurationSerializable {
 
 	public CompoundQuest(long received, int progressMax, QuestReward reward, Quest... questList) {
 		super(received, progressMax, reward);
-		for (Quest q: questList) {
+		for (Quest q : questList) {
 			quests.add(q);
 		}
 	}
@@ -27,7 +27,7 @@ public class CompoundQuest extends Quest implements ConfigurationSerializable {
 	@Override
 	public String getTitle() {
 		List<String> titles = new ArrayList<String>();
-		for (Quest q: quests) {
+		for (Quest q : quests) {
 			titles.add(q.getTitle());
 		}
 		return StringUtils.join(titles, ", ");

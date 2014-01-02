@@ -12,8 +12,8 @@ import java.util.Map;
 
 public abstract class Quest {
 
-    String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
-    long received;
+	String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
+	long received;
 	int progress = 0;
 	int progressMax;
 	boolean cancelled = false;
@@ -34,6 +34,7 @@ public abstract class Quest {
 
 
 	public abstract String getTitle();
+
 	public abstract String[] getDescription();
 
 	public boolean isFinished() {
@@ -43,6 +44,7 @@ public abstract class Quest {
 	public String getProgressString() {
 		return cancelled ? "Cancelled" : getProgress() == getProgressMax() ? "Completed" : getProgress() + "/" + getProgressMax();
 	}
+
 	public int getProgress() {
 		return progress;
 	}

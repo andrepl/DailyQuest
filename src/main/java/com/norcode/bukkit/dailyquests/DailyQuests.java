@@ -37,26 +37,26 @@ import java.util.Random;
 
 public class DailyQuests extends JavaPlugin implements Listener {
 
-    private String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
+	private String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
 	private Random rand = new Random();
 	private HashMap<String, QuestType> questTypes = new HashMap<String, QuestType>();
 	private QuestCommand questCommand;
 	private RewardManager rewardManager;
 
- 	@Override
+	@Override
 	public void onEnable() {
 		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
-	        registerQuestType("Hunting", new Hunting(this));
+		registerQuestType("Hunting", new Hunting(this));
 		registerQuestType("Compound", new Compound(this));
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
 	}
 
 	public boolean registerQuestType(String name, QuestType questType) {
-		for (QuestType t: questTypes.values()) {
+		for (QuestType t : questTypes.values()) {
 			if (t.getClass().equals(questType.getClass())) {
 				return false;
 			}
@@ -104,8 +104,8 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	}
 
 
-	public static void send(CommandSender player, Object ... lines) {
-		for (Object line: lines) {
+	public static void send(CommandSender player, Object... lines) {
+		for (Object line : lines) {
 			if (line instanceof String) {
 				player.sendMessage((String) line);
 			} else if (line instanceof IChatBaseComponent) {
@@ -117,13 +117,14 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	}
 
 	public static void send(CommandSender player, ChatBaseComponent chat) {
-		PacketPlayOutChat packet =	new PacketPlayOutChat(chat, true);
+		PacketPlayOutChat packet = new PacketPlayOutChat(chat, true);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
 	/**
 	 * get the players current quest, or generate it if they have none.
 	 * this does not include completed quests.
+	 *
 	 * @param player
 	 * @return the players current Quest, or a new one if they had none.
 	 */
@@ -146,6 +147,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	/**
 	 * returns all quests of the given type that a player currently has assigned.  this is usually 0 or 1 quests..
 	 * but in the case of a compound quest may be more.
+	 *
 	 * @param player
 	 * @param questType
 	 * @return
@@ -154,7 +156,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		Quest quest = getPlayerQuest(player);
 		List<Quest> results = new ArrayList<Quest>();
 		if (quest instanceof CompoundQuest) {
-			for (Quest q: ((CompoundQuest) quest).getQuests()) {
+			for (Quest q : ((CompoundQuest) quest).getQuests()) {
 				if (q.getClass().equals(questType)) {
 					results.add(q);
 				}
@@ -165,23 +167,23 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		return results;
 	}
 
-	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onQuestProgress(QuestProgressEvent event) {
 		send(event.getPlayer(), new Text(getChatPrefix()).append(event.getQuest().getTitle()).append(" [" + event.getQuest().getProgressString() + "]"));
 	}
 
-	@EventHandler(ignoreCancelled=true, priority= EventPriority.MONITOR)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onQuestComplete(QuestCompleteEvent event) {
 		setQuestsCompleted(event.getPlayer(), getQuestsCompleted(event.getPlayer()) + 1);
 	}
 
-    @EventHandler()
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        this.getServer().getPluginCommand("quest").execute(event.getPlayer(), "quest", new String[]{});
-    }
+	@EventHandler()
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		this.getServer().getPluginCommand("quest").execute(event.getPlayer(), "quest", new String[]{});
+	}
 
 	public QuestType getQuestType(String typeLower) {
-		for (String k: questTypes.keySet()) {
+		for (String k : questTypes.keySet()) {
 			if (k.equalsIgnoreCase(typeLower)) {
 				return questTypes.get(k);
 			}
@@ -196,7 +198,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		player.setMetadata(MetaKeys.ACTIVE_QUEST, new FixedMetadataValue(this, quest));
 	}
 
-    public String getChatPrefix() {
-        return chatPrefix;
-    }
+	public String getChatPrefix() {
+		return chatPrefix;
+	}
 }

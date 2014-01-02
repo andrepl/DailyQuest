@@ -14,5 +14,6 @@ public abstract class QuestType implements Listener {
 	protected DailyQuests plugin;
 
 	public abstract Quest fromUserInput(LinkedList<String> args) throws CommandError;
+
 	public abstract Quest generateQuest(double difficulty);
 }

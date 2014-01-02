@@ -42,7 +42,7 @@ public class MoneyReward implements QuestReward {
 
 
 	private static Economy getEconomy() {
-	    if (economy == null) {
+		if (economy == null) {
 			RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 			if (economyProvider != null) {
 				economy = economyProvider.getProvider();

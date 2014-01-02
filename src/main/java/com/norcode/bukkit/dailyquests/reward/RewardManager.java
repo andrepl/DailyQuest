@@ -33,8 +33,8 @@ public class RewardManager {
 
 	public QuestReward generateReward(double difficulty) {
 		List<Class<? extends QuestReward>> choices = new ArrayList<Class<? extends QuestReward>>();
-		for (Map.Entry<Class<? extends QuestReward>, Integer> e: rewardTypes.entrySet()) {
-			for (int i=0;i<e.getValue();i++) {
+		for (Map.Entry<Class<? extends QuestReward>, Integer> e : rewardTypes.entrySet()) {
+			for (int i = 0; i < e.getValue(); i++) {
 				choices.add(e.getKey());
 			}
 		}
