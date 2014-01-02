@@ -1,5 +1,6 @@
 package com.norcode.bukkit.dailyquests.reward;
 
+import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.chat.Text;
 import net.minecraft.server.v1_7_R1.EnchantmentManager;
 import org.bukkit.Bukkit;
@@ -142,5 +143,8 @@ public class ItemReward implements QuestReward {
 			map.put("item"+(ctr++), s);
 		}
 		return map;
+	}
+
+	public static void initialize(DailyQuests plugin) {
 	}
 }
