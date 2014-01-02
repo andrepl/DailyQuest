@@ -61,9 +61,6 @@ public abstract class Quest {
 			if (isFinished()) {
 				QuestCompleteEvent completeEvent = new QuestCompleteEvent(player, this);
 				Bukkit.getServer().getPluginManager().callEvent(completeEvent);
-
-			} else {
-				player.sendMessage(chatPrefix + getTitle() + " [" + progress + "/" + progressMax + "]");
 			}
 		}
 	}

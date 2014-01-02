@@ -40,7 +40,7 @@ public class HuntingQuest extends Quest implements ConfigurationSerializable {
 		} else if (entityType == EntityType.MUSHROOM_COW) {
 			typeName = "Mooshroom";
 		}
-		if (progress > 1) {
+		if (progressMax > 1) {
 			if (typeName.endsWith("man")) {
 				typeName = typeName.substring(0, typeName.length() - 3) + "men";
 			} else if (!ALREADY_PLURAL.contains(entityType)) {

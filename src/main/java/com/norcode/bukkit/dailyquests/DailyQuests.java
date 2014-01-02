@@ -10,6 +10,7 @@ import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import com.norcode.bukkit.dailyquests.reward.RewardManager;
 import com.norcode.bukkit.dailyquests.type.Compound;
 import com.norcode.bukkit.dailyquests.type.Fishing;
+import com.norcode.bukkit.dailyquests.type.Harvesting;
 import com.norcode.bukkit.dailyquests.type.Hunting;
 import com.norcode.bukkit.dailyquests.type.Mining;
 import com.norcode.bukkit.dailyquests.type.QuestType;
@@ -50,7 +51,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
 		registerQuestType("Hunting", new Hunting(this));
-		registerQuestType("Harvesting", new Hunting(this));
+		registerQuestType("Harvesting", new Harvesting(this));
 		registerQuestType("Compound", new Compound(this));
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
@@ -170,7 +171,9 @@ public class DailyQuests extends JavaPlugin implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onQuestProgress(QuestProgressEvent event) {
-		send(event.getPlayer(), new Text(getChatPrefix()).append(event.getQuest().getTitle()).append(" [" + event.getQuest().getProgressString() + "]"));
+		getLogger().info(event.toString());
+		send(event.getPlayer(), new Text(getChatPrefix()).append(event.getQuest().getTitle()).append(" [" +
+				(event.getQuest().getProgress() + event.getAmount()) + "/" + event.getQuest().getProgressMax() + "]"));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
