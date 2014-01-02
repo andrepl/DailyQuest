@@ -30,9 +30,9 @@ public class QuestCommand extends BaseCommand {
 		Player p = (Player) commandSender;
 
 		Quest quest = plugin.getPlayerQuest(p);
-		plugin.send(p, quest.getTitle());
-		plugin.send(p, new Text("Reward: ").append(quest.getReward().getTitle()));
-		plugin.send(p, new Text("Progress: "  + quest.getProgressString()));
+		plugin.send(p, new Text(plugin.getChatPrefix()).append(quest.getTitle()));
+		plugin.send(p, new Text(plugin.getChatPrefix()).append(new Text("Reward: ").append(quest.getReward().getTitle())));
+		plugin.send(p, new Text(plugin.getChatPrefix()).append(new Text("Progress: "  + quest.getProgressString())));
 	}
 
 	public static class CancelCommand extends BaseCommand {
@@ -53,7 +53,7 @@ public class QuestCommand extends BaseCommand {
 			}
 
 			quest.setCancelled(true);
-			p.sendMessage("Your quest has been cancelled.");
+			p.sendMessage(plugin.getChatPrefix() + "Your quest has been cancelled.");
 		}
 	}
 
