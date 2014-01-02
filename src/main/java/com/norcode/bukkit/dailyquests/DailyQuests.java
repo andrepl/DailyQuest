@@ -154,7 +154,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	 * @param questType
 	 * @return
 	 */
-	public <T> List<T> getPlayerQuests(Player player, Class<T> questType) {
+	public <T extends Quest> List<T> getPlayerQuests(Player player, Class<T> questType) {
 		Quest quest = getPlayerQuest(player);
 		List<T> results = new ArrayList<T>();
 		if (quest instanceof CompoundQuest) {
