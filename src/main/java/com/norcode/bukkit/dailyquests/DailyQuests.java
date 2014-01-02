@@ -8,6 +8,7 @@ import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import com.norcode.bukkit.dailyquests.reward.RewardManager;
 import com.norcode.bukkit.dailyquests.type.Compound;
 import com.norcode.bukkit.dailyquests.type.Fishing;
+import com.norcode.bukkit.dailyquests.type.Hunting;
 import com.norcode.bukkit.dailyquests.type.Mining;
 import com.norcode.bukkit.dailyquests.type.QuestType;
 import com.norcode.bukkit.playerid.PlayerID;
@@ -42,6 +43,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
+	        registerQuestType("Hunting", new Hunting(this));
 		registerQuestType("Compound", new Compound(this));
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
