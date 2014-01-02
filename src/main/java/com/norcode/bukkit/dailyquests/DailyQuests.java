@@ -50,6 +50,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
 		registerQuestType("Hunting", new Hunting(this));
+		registerQuestType("Harvesting", new Hunting(this));
 		registerQuestType("Compound", new Compound(this));
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
@@ -152,17 +153,17 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	 * @param questType
 	 * @return
 	 */
-	public List<Quest> getPlayerQuests(Player player, Class<? extends Quest> questType) {
+	public <T> List<T> getPlayerQuests(Player player, Class<T> questType) {
 		Quest quest = getPlayerQuest(player);
-		List<Quest> results = new ArrayList<Quest>();
+		List<T> results = new ArrayList<T>();
 		if (quest instanceof CompoundQuest) {
 			for (Quest q : ((CompoundQuest) quest).getQuests()) {
 				if (q.getClass().equals(questType)) {
-					results.add(q);
+					results.add((T) q);
 				}
 			}
 		} else if (quest.getClass().equals(questType)) {
-			results.add(quest);
+			results.add((T) quest);
 		}
 		return results;
 	}
