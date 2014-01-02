@@ -1,5 +1,6 @@
 package com.norcode.bukkit.dailyquests.reward;
 
+import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.chat.Text;
 import net.minecraft.server.v1_7_R1.EnchantmentManager;
 import org.bukkit.Bukkit;
@@ -59,7 +60,7 @@ public class ItemReward implements QuestReward {
 		} else {
 			// diamond
 			switch (random.nextInt(8)) {
-				case 0: mat = Material.DIAMOND_AXE; break;
+				case 0: mat = Material.DIAMOND_AXE;	break;
 				case 1: mat = Material.DIAMOND_SWORD; break;
 				case 2: mat = Material.DIAMOND_PICKAXE; break;
 				case 3: mat = Material.DIAMOND_BOOTS; break;
@@ -71,16 +72,17 @@ public class ItemReward implements QuestReward {
 		}
 		if (random.nextDouble() < 0.15) {
 			// enchanted book once in a while.
-			mat = Material.ENCHANTED_BOOK;
+			mat = Material.BOOK;
+			difficulty += 0.5;
 		}
 		ItemStack stack = new ItemStack(mat);
 		net.minecraft.server.v1_7_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);
-		nms = EnchantmentManager.a(random, nms, (int)Math.min(30, difficulty * 30));
+		nms = EnchantmentManager.a(random, nms, (int) Math.min(30, difficulty * 30));
 		stack = CraftItemStack.asCraftMirror(nms);
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 		if (difficulty > 0.8) {
-			int extra = 1+random.nextInt((int) ((difficulty-0.8) * 10));
-			for (int i=0;i<extra;i++) {
+			int extra = 1 + random.nextInt((int) ((difficulty - 0.8) * 10));
+			for (int i = 0; i < extra; i++) {
 				ItemReward rwd = ItemReward.generate(random, 0.8);
 				stacks.addAll(rwd.stacks);
 			}
@@ -94,7 +96,7 @@ public class ItemReward implements QuestReward {
 		List<String> keys = new ArrayList<String>(map.keySet());
 		this.stacks = new ArrayList<ItemStack>();
 		Collections.sort(keys);
-		for (String key: keys) {
+		for (String key : keys) {
 			if (key.startsWith("item")) {
 				Object value = map.get(key);
 				Bukkit.getLogger().info("Got " + key + "->" + value + "(" + value.getClass() + ")");
@@ -106,12 +108,12 @@ public class ItemReward implements QuestReward {
 	@Override
 	public void give(Player p) {
 		ItemStack[] rewardStacks = new ItemStack[stacks.size()];
-		for (int i=0;i<stacks.size();i++) {
+		for (int i = 0; i < stacks.size(); i++) {
 			rewardStacks[i] = stacks.get(i).clone();
 		}
 		HashMap<Integer, ItemStack> noFit = p.getInventory().addItem(rewardStacks);
 		// whatever doesn't fit in their inv,  drop it at their feet.
-		for (ItemStack s: noFit.values()) {
+		for (ItemStack s : noFit.values()) {
 			p.getWorld().dropItem(p.getLocation(), s);
 		}
 	}
@@ -137,10 +139,13 @@ public class ItemReward implements QuestReward {
 	@Override
 	public Map<String, Object> serialize() {
 		HashMap map = new HashMap<String, Object>();
-		int ctr=0;
-		for (ItemStack s: stacks) {
-			map.put("item"+(ctr++), s);
+		int ctr = 0;
+		for (ItemStack s : stacks) {
+			map.put("item" + (ctr++), s);
 		}
 		return map;
+	}
+
+	public static void initialize(DailyQuests plugin) {
 	}
 }

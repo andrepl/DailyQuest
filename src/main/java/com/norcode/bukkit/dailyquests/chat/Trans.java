@@ -30,12 +30,13 @@ public class Trans extends ChatMessage {
 		return (Trans) a(node);
 	}
 
-	public Trans append(IChatBaseComponent ... nodes) {
-		for (IChatBaseComponent node: nodes) {
+	public Trans append(IChatBaseComponent... nodes) {
+		for (IChatBaseComponent node : nodes) {
 			a(node);
 		}
 		return this;
 	}
+
 	public Trans appendItem(ItemStack stack) {
 		net.minecraft.server.v1_7_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);
 		NBTTagCompound tag = new NBTTagCompound();

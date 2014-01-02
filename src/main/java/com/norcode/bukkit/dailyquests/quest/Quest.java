@@ -1,14 +1,18 @@
 package com.norcode.bukkit.dailyquests.quest;
 
 import com.norcode.bukkit.dailyquests.event.QuestCompleteEvent;
+import com.norcode.bukkit.dailyquests.event.QuestProgressEvent;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Quest {
+
+	String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
 	long received;
 	int progress = 0;
 	int progressMax;
@@ -30,6 +34,7 @@ public abstract class Quest {
 
 
 	public abstract String getTitle();
+
 	public abstract String[] getDescription();
 
 	public boolean isFinished() {
@@ -39,6 +44,7 @@ public abstract class Quest {
 	public String getProgressString() {
 		return cancelled ? "Cancelled" : getProgress() == getProgressMax() ? "Completed" : getProgress() + "/" + getProgressMax();
 	}
+
 	public int getProgress() {
 		return progress;
 	}
@@ -48,16 +54,14 @@ public abstract class Quest {
 	}
 
 	public void progress(Player player, int amt) {
-		progress += amt;
-		if (isFinished()) {
-			QuestCompleteEvent event = new QuestCompleteEvent(player, this);
-			Bukkit.getServer().getPluginManager().callEvent(event);
-			if (!event.isCancelled()) {
-				player.sendMessage("Quest Completed!");
-				getReward().give(player);
+		QuestProgressEvent progEvent = new QuestProgressEvent(player, this, amt);
+		Bukkit.getServer().getPluginManager().callEvent(progEvent);
+		if (!progEvent.isCancelled()) {
+			progress += progEvent.getAmount();
+			if (isFinished()) {
+				QuestCompleteEvent completeEvent = new QuestCompleteEvent(player, this);
+				Bukkit.getServer().getPluginManager().callEvent(completeEvent);
 			}
-		} else {
-			player.sendMessage(getTitle() + " [" + progress + "/" + progressMax + "]");
 		}
 	}
 

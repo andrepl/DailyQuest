@@ -27,13 +27,13 @@ public class Compound extends QuestType {
 
 	@Override
 	public Quest generateQuest(double difficulty) {
-		int num = 1 + (int)(difficulty * (1+random.nextDouble()) * 3);
+		int num = 1 + (int) (difficulty * (1 + random.nextDouble()) * 3);
 		if (num == 1) {
 			num++;
 		}
 		Quest[] quests = new Quest[num];
-		for (int i=0;i<num;i++) {
-			quests[i] = plugin.generateQuest(difficulty/2);
+		for (int i = 0; i < num; i++) {
+			quests[i] = plugin.generateQuest(difficulty / 2);
 			if (quests[i] instanceof CompoundQuest) {
 				Bukkit.getLogger().info("Compound generated a compound, retrying.");
 				// re-generate it if it's another compound quest.
@@ -41,7 +41,7 @@ public class Compound extends QuestType {
 			}
 		}
 		Bukkit.getLogger().info("Generating compound quest w/ " + quests.length + "quests");
-		return new CompoundQuest(System.currentTimeMillis(), num, plugin.generateReward(difficulty*num), quests);
+		return new CompoundQuest(System.currentTimeMillis(), num, plugin.generateReward(difficulty * num), quests);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -49,7 +49,7 @@ public class Compound extends QuestType {
 		plugin.getLogger().info("QuestCompleteEvent: " + event.getQuest());
 		Quest quest = plugin.getPlayerQuest(event.getPlayer());
 		if (quest instanceof CompoundQuest) {
-			for (Quest q: ((CompoundQuest) quest).getQuests()) {
+			for (Quest q : ((CompoundQuest) quest).getQuests()) {
 				plugin.getLogger().info(q.getTitle() + ": " + q.equals(event.getQuest()));
 			}
 

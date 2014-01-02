@@ -6,5 +6,6 @@ import org.bukkit.entity.Player;
 
 public interface QuestReward extends ConfigurationSerializable {
 	public void give(Player p);
+
 	public IChatBaseComponent getTitle();
 }
