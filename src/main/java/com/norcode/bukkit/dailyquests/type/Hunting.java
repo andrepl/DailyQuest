@@ -1,18 +1,16 @@
 package com.norcode.bukkit.dailyquests.type;
 
 import com.norcode.bukkit.dailyquests.DailyQuests;
+import com.norcode.bukkit.dailyquests.command.CommandError;
 import com.norcode.bukkit.dailyquests.quest.HuntingQuest;
-import com.norcode.bukkit.dailyquests.quest.MiningQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
-import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.HashMap;
-import java.util.Random;
+import java.util.LinkedList;
 
 public class Hunting extends QuestType {
 
@@ -50,7 +48,12 @@ public class Hunting extends QuestType {
         this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @Override
+	@Override
+	public Quest fromUserInput(LinkedList<String> args) throws CommandError {
+		return null;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
     public HuntingQuest generateQuest(double difficulty) {
         //set the default to be 1 pig
         EntityType entityType =  EntityType.PIG;
