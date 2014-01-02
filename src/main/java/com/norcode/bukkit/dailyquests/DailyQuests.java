@@ -16,6 +16,7 @@ import net.minecraft.server.v1_7_R1.ChatBaseComponent;
 import net.minecraft.server.v1_7_R1.IChatBaseComponent;
 import net.minecraft.server.v1_7_R1.PacketPlayOutChat;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
@@ -33,12 +34,13 @@ import java.util.Random;
 
 public class DailyQuests extends JavaPlugin implements Listener {
 
+    private String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
 	private Random rand = new Random();
 	private HashMap<String, QuestType> questTypes = new HashMap<String, QuestType>();
 	private QuestCommand questCommand;
 	private RewardManager rewardManager;
 
-	@Override
+ 	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
@@ -179,4 +181,8 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		PlayerID.savePlayerData(getName(), player, cfg);
 		player.setMetadata(MetaKeys.ACTIVE_QUEST, new FixedMetadataValue(this, quest));
 	}
+
+    public String getChatPrefix() {
+        return chatPrefix;
+    }
 }

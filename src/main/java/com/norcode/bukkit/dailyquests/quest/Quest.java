@@ -3,13 +3,16 @@ package com.norcode.bukkit.dailyquests.quest;
 import com.norcode.bukkit.dailyquests.event.QuestCompleteEvent;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Quest {
-	long received;
+
+    String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
+    long received;
 	int progress = 0;
 	int progressMax;
 	boolean cancelled = false;
@@ -53,11 +56,11 @@ public abstract class Quest {
 			QuestCompleteEvent event = new QuestCompleteEvent(player, this);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 			if (!event.isCancelled()) {
-				player.sendMessage("Quest Completed!");
+				player.sendMessage(chatPrefix + "Quest Completed!");
 				getReward().give(player);
 			}
 		} else {
-			player.sendMessage(getTitle() + " [" + progress + "/" + progressMax + "]");
+			player.sendMessage(chatPrefix + getTitle() + " [" + progress + "/" + progressMax + "]");
 		}
 	}
 
