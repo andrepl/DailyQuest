@@ -1,0 +1,4 @@
+rewards:
+  money:
+    min-amount: 25.0
+    max-amount: 25.0

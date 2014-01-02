@@ -43,6 +43,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 
  	@Override
 	public void onEnable() {
+		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
