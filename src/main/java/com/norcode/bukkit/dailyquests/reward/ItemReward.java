@@ -72,7 +72,8 @@ public class ItemReward implements QuestReward {
 		}
 		if (random.nextDouble() < 0.15) {
 			// enchanted book once in a while.
-			mat = Material.ENCHANTED_BOOK;
+			mat = Material.BOOK;
+			difficulty += 0.5;
 		}
 		ItemStack stack = new ItemStack(mat);
 		net.minecraft.server.v1_7_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);

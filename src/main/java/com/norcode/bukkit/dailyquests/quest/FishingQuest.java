@@ -30,13 +30,7 @@ public class FishingQuest extends Quest implements ConfigurationSerializable {
 
 	@Override
 	public String getTitle() {
-		String response =  "Catch " + progressMax + " " + catchType.getName();
-        if (progressMax > 1) {
-            return response + "s.";
-        }
-        else {
-            return response + ".";
-        }
+		return "Catch " + progressMax + " " + catchType.getName();
 	}
 
 	@Override

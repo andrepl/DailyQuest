@@ -31,8 +31,8 @@ public class QuestCommand extends BaseCommand {
 
 		Quest quest = plugin.getPlayerQuest(p);
 		plugin.send(p, new Text(plugin.getChatPrefix()).append(quest.getTitle()));
-		plugin.send(p, new Text(plugin.getChatPrefix()).append(new Text("Reward: ").append(quest.getReward().getTitle())));
-		plugin.send(p, new Text(plugin.getChatPrefix()).append(new Text("Progress: "  + quest.getProgressString())));
+		plugin.send(p, new Text("Progress: "  + quest.getProgressString()));
+		plugin.send(p, new Text("Reward: ").append(quest.getReward().getTitle()));
 	}
 
 	public static class CancelCommand extends BaseCommand {
