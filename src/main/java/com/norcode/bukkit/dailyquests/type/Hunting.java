@@ -4,6 +4,7 @@ import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.quest.HuntingQuest;
 import com.norcode.bukkit.dailyquests.quest.MiningQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
+import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -107,14 +108,15 @@ public class Hunting extends QuestType {
         if (enemies.keySet().contains(event.getEntityType())) {
             //verify it was a player kill, then check for quests and increment counters
             if (event.getEntity().getKiller() != null) {
-                Quest quest = plugin.getPlayerQuest(event.getEntity().getKiller());
-                if (quest instanceof HuntingQuest) {
-                    if ((!quest.isFinished()) && (event.getEntityType() == ((HuntingQuest) quest).getEntityType())) {
-                        quest.progress(event.getEntity().getKiller(), 1);
+                if (plugin.getPlayerQuest(event.getEntity().getKiller()) instanceof HuntingQuest) {
+                    for (Quest quest: plugin.getPlayerQuests(event.getEntity().getKiller(), HuntingQuest.class)) {
+                        if ((!quest.isFinished()) && (event.getEntityType() == ((HuntingQuest) quest).getEntityType())) {
+                            quest.progress(event.getEntity().getKiller(), 1);
+                            break;
+                        }
                     }
                 }
             }
         }
     }
-
 }

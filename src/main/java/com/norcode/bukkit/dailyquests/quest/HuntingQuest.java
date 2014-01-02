@@ -29,7 +29,12 @@ public class HuntingQuest extends Quest implements ConfigurationSerializable {
 
     @Override
     public String getTitle() {
-        return "Hunt " + progressMax + " " + this.entityType.name() + ".";
+        String response = "Hunt and kill " + progressMax + " " + this.entityType.name();
+        //pluralize it for cleanliness
+        if (progress > 1) response = response + "s.";
+        else response = response + ".";
+
+        return response;
     }
 
     @Override
