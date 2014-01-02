@@ -35,87 +35,39 @@ public class ItemReward implements QuestReward {
 
 			// leather gear, sometimes iron.
 			switch (random.nextInt(4)) {
-				case 0:
-					mat = Material.LEATHER_BOOTS;
-					break;
-				case 1:
-					mat = Material.LEATHER_LEGGINGS;
-					break;
-				case 2:
-					mat = Material.LEATHER_CHESTPLATE;
-					break;
-				case 3:
-					mat = Material.LEATHER_HELMET;
-					break;
+				case 0: mat = Material.LEATHER_BOOTS; break;
+				case 1: mat = Material.LEATHER_LEGGINGS; break;
+				case 2: mat = Material.LEATHER_CHESTPLATE; break;
+				case 3: mat = Material.LEATHER_HELMET; break;
 			}
 
 		} else if (difficulty <= 0.5 && random.nextDouble() < 0.85) {
 			// chain or iron
 			switch (random.nextInt(12)) {
-				case 0:
-					mat = Material.IRON_SWORD;
-					break;
-				case 1:
-					mat = Material.IRON_AXE;
-					break;
-				case 2:
-					mat = Material.IRON_PICKAXE;
-					break;
-				case 3:
-					mat = Material.BOW;
-					break;
-				case 4:
-					mat = Material.IRON_BOOTS;
-					break;
-				case 5:
-					mat = Material.IRON_LEGGINGS;
-					break;
-				case 6:
-					mat = Material.IRON_CHESTPLATE;
-					break;
-				case 7:
-					mat = Material.IRON_HELMET;
-					break;
-				case 8:
-					mat = Material.CHAINMAIL_BOOTS;
-					break;
-				case 9:
-					mat = Material.CHAINMAIL_LEGGINGS;
-					break;
-				case 10:
-					mat = Material.CHAINMAIL_CHESTPLATE;
-					break;
-				case 11:
-					mat = Material.CHAINMAIL_HELMET;
-					break;
+				case 0: mat = Material.IRON_SWORD; break;
+				case 1: mat = Material.IRON_AXE; break;
+				case 2: mat = Material.IRON_PICKAXE; break;
+				case 3: mat = Material.BOW; break;
+				case 4: mat = Material.IRON_BOOTS; break;
+				case 5: mat = Material.IRON_LEGGINGS; break;
+				case 6: mat = Material.IRON_CHESTPLATE; break;
+				case 7: mat = Material.IRON_HELMET; break;
+				case 8: mat = Material.CHAINMAIL_BOOTS; break;
+				case 9: mat = Material.CHAINMAIL_LEGGINGS; break;
+				case 10: mat = Material.CHAINMAIL_CHESTPLATE; break;
+				case 11: mat = Material.CHAINMAIL_HELMET; break;
 			}
 		} else {
 			// diamond
 			switch (random.nextInt(8)) {
-				case 0:
-					mat = Material.DIAMOND_AXE;
-					break;
-				case 1:
-					mat = Material.DIAMOND_SWORD;
-					break;
-				case 2:
-					mat = Material.DIAMOND_PICKAXE;
-					break;
-				case 3:
-					mat = Material.DIAMOND_BOOTS;
-					break;
-				case 4:
-					mat = Material.DIAMOND_HELMET;
-					break;
-				case 5:
-					mat = Material.DIAMOND_LEGGINGS;
-					break;
-				case 6:
-					mat = Material.DIAMOND_CHESTPLATE;
-					break;
-				case 7:
-					mat = Material.DIAMOND_SWORD;
-					break; // an extra sword, because diamond swords rule.
+				case 0: mat = Material.DIAMOND_AXE;	break;
+				case 1: mat = Material.DIAMOND_SWORD; break;
+				case 2: mat = Material.DIAMOND_PICKAXE; break;
+				case 3: mat = Material.DIAMOND_BOOTS; break;
+				case 4: mat = Material.DIAMOND_HELMET; break;
+				case 5: mat = Material.DIAMOND_LEGGINGS; break;
+				case 6: mat = Material.DIAMOND_CHESTPLATE; break;
+				case 7: mat = Material.DIAMOND_SWORD; break; // an extra sword, because diamond swords rule.
 			}
 		}
 		if (random.nextDouble() < 0.15) {
