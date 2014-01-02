@@ -1,6 +1,7 @@
 package com.norcode.bukkit.dailyquests.quest;
 
 import com.norcode.bukkit.dailyquests.event.QuestCompleteEvent;
+import com.norcode.bukkit.dailyquests.event.QuestProgressEvent;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,16 +52,17 @@ public abstract class Quest {
 	}
 
 	public void progress(Player player, int amt) {
-		progress += amt;
-		if (isFinished()) {
-			QuestCompleteEvent event = new QuestCompleteEvent(player, this);
-			Bukkit.getServer().getPluginManager().callEvent(event);
-			if (!event.isCancelled()) {
-				player.sendMessage(chatPrefix + "Quest Completed!");
-				getReward().give(player);
+		QuestProgressEvent progEvent = new QuestProgressEvent(player, this, amt);
+		Bukkit.getServer().getPluginManager().callEvent(progEvent);
+		if (!progEvent.isCancelled()) {
+			progress += progEvent.getAmount();
+			if (isFinished()) {
+				QuestCompleteEvent completeEvent = new QuestCompleteEvent(player, this);
+				Bukkit.getServer().getPluginManager().callEvent(completeEvent);
+
+			} else {
+				player.sendMessage(chatPrefix + getTitle() + " [" + progress + "/" + progressMax + "]");
 			}
-		} else {
-			player.sendMessage(chatPrefix + getTitle() + " [" + progress + "/" + progressMax + "]");
 		}
 	}
 

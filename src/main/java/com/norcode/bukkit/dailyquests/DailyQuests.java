@@ -1,7 +1,9 @@
 package com.norcode.bukkit.dailyquests;
 
+import com.norcode.bukkit.dailyquests.chat.Text;
 import com.norcode.bukkit.dailyquests.command.QuestCommand;
 import com.norcode.bukkit.dailyquests.event.QuestCompleteEvent;
+import com.norcode.bukkit.dailyquests.event.QuestProgressEvent;
 import com.norcode.bukkit.dailyquests.quest.CompoundQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
@@ -161,6 +163,11 @@ public class DailyQuests extends JavaPlugin implements Listener {
 			results.add(quest);
 		}
 		return results;
+	}
+
+	@EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
+	public void onQuestProgress(QuestProgressEvent event) {
+		send(event.getPlayer(), new Text(getChatPrefix()).append(event.getQuest().getTitle()).append(" [" + event.getQuest().getProgressString() + "]"));
 	}
 
 	@EventHandler(ignoreCancelled=true, priority= EventPriority.MONITOR)
