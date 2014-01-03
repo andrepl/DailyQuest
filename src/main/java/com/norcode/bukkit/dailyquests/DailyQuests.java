@@ -13,6 +13,7 @@ import com.norcode.bukkit.dailyquests.type.Fishing;
 import com.norcode.bukkit.dailyquests.type.Harvesting;
 import com.norcode.bukkit.dailyquests.type.Hunting;
 import com.norcode.bukkit.dailyquests.type.Mining;
+import com.norcode.bukkit.dailyquests.type.PVP;
 import com.norcode.bukkit.dailyquests.type.QuestType;
 import com.norcode.bukkit.playerid.PlayerID;
 import net.minecraft.server.v1_7_R1.ChatBaseComponent;
@@ -52,6 +53,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		registerQuestType("Mining", new Mining(this));
 		registerQuestType("Hunting", new Hunting(this));
 		registerQuestType("Harvesting", new Harvesting(this));
+		registerQuestType("PVP", new PVP(this));
 		registerQuestType("Compound", new Compound(this));
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
