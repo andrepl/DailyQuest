@@ -8,16 +8,7 @@ import com.norcode.bukkit.dailyquests.quest.CompoundQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
 import com.norcode.bukkit.dailyquests.reward.QuestReward;
 import com.norcode.bukkit.dailyquests.reward.RewardManager;
-<<<<<<< .merge_file_wweJCt
 import com.norcode.bukkit.dailyquests.type.*;
-=======
-import com.norcode.bukkit.dailyquests.type.Compound;
-import com.norcode.bukkit.dailyquests.type.Fishing;
-import com.norcode.bukkit.dailyquests.type.Harvesting;
-import com.norcode.bukkit.dailyquests.type.Hunting;
-import com.norcode.bukkit.dailyquests.type.Mining;
-import com.norcode.bukkit.dailyquests.type.QuestType;
->>>>>>> .merge_file_0thwZt
 import com.norcode.bukkit.playerid.PlayerID;
 import net.minecraft.server.v1_7_R1.ChatBaseComponent;
 import net.minecraft.server.v1_7_R1.IChatBaseComponent;
@@ -54,7 +45,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
 		registerQuestType("Mining", new Mining(this));
-	    registerQuestType("Hunting", new Hunting(this));
+        registerQuestType("Hunting", new Hunting(this));
         registerQuestType("PVP", new PVP(this));
 		registerQuestType("Harvesting", new Harvesting(this));
 		registerQuestType("Compound", new Compound(this));
