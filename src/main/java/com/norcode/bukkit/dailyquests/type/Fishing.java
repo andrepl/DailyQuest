@@ -4,7 +4,6 @@ import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.command.CommandError;
 import com.norcode.bukkit.dailyquests.quest.FishingQuest;
 import com.norcode.bukkit.dailyquests.quest.Quest;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Item;
@@ -47,15 +46,11 @@ public class Fishing extends QuestType {
 		}
 
 		public boolean satisfiedBy(ItemStack caught) {
-			Bukkit.getLogger().info("Checking if " + caught + " satisfies " + this);
 			if (caught.getType() == stack.getType() && (
 					caught.getData().getData() == this.getData() || this.getData() == -1)) {
-				Bukkit.getLogger().info("matches, it's good.");
 				return true;
-			} else {
-				Bukkit.getLogger().info("doesn't match: " + caught + " != " + stack);
-				return false;
 			}
+			return false;
 		}
 	}
 

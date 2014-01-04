@@ -3,7 +3,6 @@ package com.norcode.bukkit.dailyquests.reward;
 import com.norcode.bukkit.dailyquests.DailyQuests;
 import com.norcode.bukkit.dailyquests.chat.Text;
 import net.minecraft.server.v1_7_R1.EnchantmentManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
@@ -92,14 +91,12 @@ public class ItemReward implements QuestReward {
 	}
 
 	public ItemReward(Map<String, Object> map) {
-		Bukkit.getLogger().info("Deserializing: " + map);
 		List<String> keys = new ArrayList<String>(map.keySet());
 		this.stacks = new ArrayList<ItemStack>();
 		Collections.sort(keys);
 		for (String key : keys) {
 			if (key.startsWith("item")) {
 				Object value = map.get(key);
-				Bukkit.getLogger().info("Got " + key + "->" + value + "(" + value.getClass() + ")");
 				this.stacks.add((ItemStack) value);
 			}
 		}

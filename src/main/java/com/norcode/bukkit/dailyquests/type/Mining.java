@@ -96,9 +96,7 @@ public class Mining extends QuestType {
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		plugin.getLogger().info("Player Placing Block." + event.getBlockPlaced().getType());
 		if (ores.keySet().contains(event.getBlockPlaced().getType())) {
-			plugin.getLogger().info("Setting block data to 1");
 			event.getBlockPlaced().setData((byte) 1);
 		}
 	}
