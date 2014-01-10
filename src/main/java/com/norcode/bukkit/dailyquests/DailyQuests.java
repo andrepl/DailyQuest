@@ -15,7 +15,7 @@ import com.norcode.bukkit.dailyquests.type.Hunting;
 import com.norcode.bukkit.dailyquests.type.Mining;
 import com.norcode.bukkit.dailyquests.type.PVP;
 import com.norcode.bukkit.dailyquests.type.QuestType;
-import com.norcode.bukkit.playerid.PlayerID;
+import com.norcode.bukkit.metalcore.MetalCorePlugin;
 import net.minecraft.server.v1_7_R1.ChatBaseComponent;
 import net.minecraft.server.v1_7_R1.IChatBaseComponent;
 import net.minecraft.server.v1_7_R1.PacketPlayOutChat;
@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class DailyQuests extends JavaPlugin implements Listener {
+public class DailyQuests extends MetalCorePlugin implements Listener {
 
 	private String chatPrefix = ChatColor.DARK_RED + "«" + ChatColor.DARK_GREEN + "Daily Quests" + ChatColor.DARK_RED + "» " + ChatColor.RESET;
 	private Random rand = new Random();
@@ -47,6 +47,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+        super.onEnable();
 		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(this, this);
 		registerQuestType("Fishing", new Fishing(this));
@@ -58,6 +59,11 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		questCommand = new QuestCommand(this);
 		rewardManager = new RewardManager(this);
 	}
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
 
 	public boolean registerQuestType(String name, QuestType questType) {
 		for (QuestType t : questTypes.values()) {
@@ -85,22 +91,20 @@ public class DailyQuests extends JavaPlugin implements Listener {
 		Quest quest = generateQuest(getQuestsCompleted(player) / 100.0);
 		player.setMetadata(MetaKeys.ACTIVE_QUEST,
 				new FixedMetadataValue(this, quest));
-		ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
+		ConfigurationSection cfg = this.getPlayerData(player);
 		cfg.set(MetaKeys.ACTIVE_QUEST, quest);
-		PlayerID.savePlayerData(getName(), player, cfg);
 		return quest;
 	}
 
 	public void setQuestsCompleted(Player player, int numCompleted) {
-		ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
+		ConfigurationSection cfg = this.getPlayerData(player);
 		cfg.set(MetaKeys.QUESTS_COMPLETED, numCompleted);
 		player.setMetadata(MetaKeys.QUESTS_COMPLETED, new FixedMetadataValue(this, numCompleted));
-		PlayerID.savePlayerData(getName(), player, cfg);
 	}
 
 	public int getQuestsCompleted(Player player) {
 		if (!player.hasMetadata(MetaKeys.QUESTS_COMPLETED)) {
-			ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
+			ConfigurationSection cfg = this.getPlayerData(player);
 			int val = cfg.getInt(MetaKeys.QUESTS_COMPLETED);
 			player.setMetadata(MetaKeys.QUESTS_COMPLETED, new FixedMetadataValue(this, val));
 		}
@@ -134,7 +138,7 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	 */
 	public Quest getPlayerQuest(Player player) {
 		if (!player.hasMetadata(MetaKeys.ACTIVE_QUEST)) {
-			ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
+			ConfigurationSection cfg = this.getPlayerData(player);
 			if (!cfg.contains(MetaKeys.ACTIVE_QUEST)) {
 				return generateQuest(player);
 			}
@@ -199,9 +203,8 @@ public class DailyQuests extends JavaPlugin implements Listener {
 	}
 
 	public void setPlayerQuest(Player player, Quest quest) {
-		ConfigurationSection cfg = PlayerID.getPlayerData(getName(), player);
+		ConfigurationSection cfg = this.getPlayerData(player);
 		cfg.set(MetaKeys.ACTIVE_QUEST, quest);
-		PlayerID.savePlayerData(getName(), player, cfg);
 		player.setMetadata(MetaKeys.ACTIVE_QUEST, new FixedMetadataValue(this, quest));
 	}
 
